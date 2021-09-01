@@ -1,0 +1,185 @@
+<!-- Identificar organización/empresa -->
+<groupId></groupId>
+
+<!-- Suele ser el mismo nombre que el del proyecto -->
+<artifactId></artifactId>
+
+<!-- Versión del fichero del artefacto (.jar) -->
+<version></version>
+
+<!-- Siempre será test -->
+<scope>test</scope>
+
+<!-- Variables usadas por el POM -->
+<properties></properties>
+
+<!-- Librerías .jar usadas en el código del proyecto -->
+<dependencies>
+	<dependency_n></dependency_n>
+</dependencies>
+
+<!-- Plugins .jar con las goals que se ejecutarán en las fases -->
+<build>
+	<plugins>
+		<plugin>
+			<executions>
+				<execution>
+					<goals>
+						<goal_n>NOMBRE_FASE</goal_n>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+</build>
+
+<!-- Configuración del plugin -->
+<configuration></configuration>
+
+<!-- ____________________________________________________JUNIT_________________________________________________________ -->
+
+<dependencies>
+	<dependency>
+		<groupId>org.junit.jupiter</groupId>
+		<!-- ______________________________________ -->
+		<!-- Todo el motor de JUNIT -->
+		<artifactId>junit-jupiter-engine</artifactId>
+		<!-- Para test parametrizados -->
+		<artifactId>junit-jupiter-params</artifactId>
+		<!-- ______________________________________ -->
+		<version>5.7.0</version>
+		<scope>test</scope>
+	</dependency>
+</dependencies>
+
+<properties>
+	<filtrar.por>fase1</filtrar.por>
+</properties>
+<!-- ... -->
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-surefire-plugin</artifactId>
+	<!-- OJO!! A PARTIR DE LA 2.22.0 -->
+	<version>2.22.2</version>
+	
+	<!-- CADA PLUGIN TIENE SU PROPIA CONFIGURACIÓN POR DEFECTO
+		AUNQUE TAMBIÉN PODEMOS ESPECIFICARSELA NOSOTROS -->
+	<configuration>
+		<groups>${filtrar.por}</groups>
+	</configuration>
+</plugin>
+
+<!-- _________________________________________________FIN JUNIT________________________________________________________ -->
+
+<!-- ___________________________________________________DBUNIT_________________________________________________________ -->
+
+<dependencies>
+
+	<!--DBUNIT-->
+	<dependency>
+		<groupId>org.dbunit</groupId>
+		<artifactId>dbunit</artifactId>
+		<version>2.7.0</version>
+		<scope>test</scope>
+	</dependency>
+
+	<!--MYSQL-->
+	<dependency>
+		<groupId>mysql</groupId>
+		<artifactId>mysql-connector-java</artifactId>
+		<version>8.0.23</version>
+		<scope>test</scope>
+	</dependency>
+
+</dependencies>
+
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-failsafe-plugin</artifactId>
+			<version>2.22.2</version>
+			<executions>
+				<execution>
+					<goals>
+						<goal>integration-test</goal>
+						<goal>verify</goal>
+					</goals>
+				</execution>
+			</executions>
+		</plugin>
+	</plugins>
+</build>
+
+<!-- __________________________________________________FIN DBUNIT______________________________________________________ -->
+
+<!-- __________________________________________________SELENIUM________________________________________________________ -->
+
+<dependencies>
+	<dependency>
+		<groupId>org.seleniumhq.selenium</groupId>
+		<artifactId>selenium-java</artifactId>
+		<version>3.141.59</version>
+	</dependency>
+</dependencies>
+
+<!-- _________________________________________________FIN SELENIUM_____________________________________________________ -->
+
+<!-- ____________________________________________________JACOCO________________________________________________________ -->
+
+<plugins>
+	
+	<plugin>
+		<groupId>org.jacoco</groupId>
+		<artifactId>jacoco-maven-plugin</artifactId>
+		<version>0.8.7</version>
+	</plugin>
+	
+	<executions>
+
+		<!-- Preparamos la instrumentación y el análisis de cobertura -->
+		<execution>
+			<id>default-prepare-agent</id>
+			<goals>
+				<goal>prepare-agent</goal>
+			</goals>
+		</execution>
+
+		<!-- Generamos el informe -->
+		<execution>
+			<id>default-report</id>
+			<goals>
+				<goal>report</goal>
+			</goals>
+		</execution>
+
+		<!-- Establecemos niveles de cobertura -->
+		<execution>
+			<id>default-check</id>
+			<goals>
+				<goal>check</goal>
+			</goals>
+
+			<!-- Reglas para construir, la construcción se detiene si
+				 a nivel de proyecto no se alcanza el 60% de CC -->
+			<configuration>
+				<rules>
+					<rule>
+						<!--(PROYECTO)-->
+						<element>BUNDLE</element>
+						<limits>
+							<limit>
+								<counter>COMPLEXITY</counter>
+								<value>COVEREDRATIO</value>
+								<minimum>0.60</minimum>
+							</limit>
+						</limits>
+					</rule>
+				</rules>
+			</configuration>
+		</execution>
+
+	</executions>
+</plugins>
+
+<!-- _________________________________________________FIN JACOCO_______________________________________________________ -->
